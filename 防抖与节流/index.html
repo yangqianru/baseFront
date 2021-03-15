@@ -1,0 +1,69 @@
+<!-- 一句指令，告诉浏览器页面使用html5版本进行编写 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>介绍防抖节流原理、区别以及应用，并用javascript进行实现</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.20/lodash.js"></script>
+</head>
+
+<body>
+    <!-- 
+        防抖：
+            定义：事件排他性，5s内只触发一次，才会执行；
+            应用：重复多次点击按钮；
+        节流：
+            定义：事件筛选性，不管5s内执行了多少次，只会触发一次；
+            应用：监听浏览器的scroll事件
+    -->
+    <div id="d1">防抖事件1</div>
+    <div>节流事件</div>
+    <script>
+        // window.onload = function () {
+        //     console.log(_.debounce)
+        // }
+        // window.onscroll = _.debounce(demo1,1000)
+        function demo1(args) {
+            console.log(args);
+        }
+
+        // document.getElementById('d1').onclick = debounceImmediately(demo1, 2000, true);
+        document.getElementById('d1').onclick = debounceImmediately(demo1.bind(this, 'd1'), 2000, true)
+
+        //最简单的防抖事件，延迟n毫秒后执行
+        function debounce(fn, wait) {
+            let timer = null;
+            return function () {
+                console.log(timer);
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                timer = setTimeout(fn, wait);
+            }
+        }
+
+        // 先立即执行，停止触发n毫秒后再触发执行
+        function debounceImmediately(fn, wait, immediate) {
+            let timer = null;
+            return (args) => {
+                if (timer) {
+                    clearTimeout(timer);
+                }
+                if (immediate) {
+                    const callNow = !timer;
+                    timer = setTimeout(() => timer = null, wait);
+                    if (callNow) {
+                        fn(args);
+                    }
+                } else {
+                    timer = setTimeout(fn.bind(null, args), wait);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
