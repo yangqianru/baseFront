@@ -15,23 +15,25 @@
         防抖：
             定义：事件排他性，5s内只触发一次，才会执行；
             应用：重复多次点击按钮；
+            实现：延迟来实现  
         节流：
             定义：事件筛选性，不管5s内执行了多少次，只会触发一次；
             应用：监听浏览器的scroll事件
     -->
     <div id="d1">防抖事件1</div>
-    <div>节流事件</div>
+    <div style="height: 2000px;" id="d2">节流事件</div>
     <script>
         // window.onload = function () {
         //     console.log(_.debounce)
         // }
         // window.onscroll = _.debounce(demo1,1000)
         function demo1(args) {
-            console.log(args);
+            console.log(args,'=========',new Date().getTime());
         }
 
-        // document.getElementById('d1').onclick = debounceImmediately(demo1, 2000, true);
         document.getElementById('d1').onclick = debounceImmediately(demo1.bind(this, 'd1'), 2000, true)
+        window.onscroll = throttle(demo1.bind(this, 'd2'), 4000);
+        document.getElementById('d2').onclick = throttleTimeout(demo1.bind(this, 'd2'), 2000);
 
         //最简单的防抖事件，延迟n毫秒后执行
         function debounce(fn, wait) {
@@ -61,6 +63,33 @@
                 } else {
                     timer = setTimeout(fn.bind(null, args), wait);
                 }
+            }
+        }
+
+        // 节流
+        // 使用时间戳实现,当事件触发时间与当前时间相隔在N毫秒内，只触发一次
+        function throttle(fn, delay) {
+            let timestap = 0;
+            return function (args) {
+                const curTime = new Date().getTime();
+                if (curTime - timestap > delay) {
+                    fn(args);
+                    timestap = curTime;
+                }
+            }
+        }
+
+        // 使用定时器实现，当timer不为null的时候，代表时间间隔未结束，只有timer为null，才可以再次执行fn
+        function throttleTimeout(fn, delay) {
+            let timer = null;
+            return function (params) {
+                if (!timer) {
+                    fn(params)
+                    timer = setTimeout(() => {
+                        timer = null
+                    }, delay);
+                }
+
             }
         }
     </script>
