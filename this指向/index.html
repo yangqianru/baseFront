@@ -1,0 +1,54 @@
+<!-- 一句指定，告诉浏览器页面使用html5进行编写 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>this指向问题</title>
+</head>
+<body>
+    <!-- 
+        this指向：
+            最终是由调用方决定的，谁调用的函数，函数的this就指向谁；
+            this永远指向一个对象；
+            this指向是动态的，很难事先确定到底指向哪个对象；
+
+     -->
+     <!-- 一个事件处理且还有一个默认行为，则先执行事件处理，再执行默认行为 -->
+     <a href="../闭包/index.html" onClick="dosomething()">aaaaaaaaaaaaa</a>
+     <A HREF="../闭包/index.html"
+     onMouseOver="window.status = 'This link goes somewhere'; return false">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</A>
+
+    <div id="s1">ssssssssssssssssssssss1</div>
+
+    <div id="s2" onclick="dosomething()">ssssssssssssssssssssss2</div>
+    <script>
+        function dosomething() {
+           alert(this)
+        }
+        // 全局作用域或者普通函数或定时器的this都指向全局对象window
+        // 1) window.dosomething()
+        dosomething();
+        // 2) window.setTimeout
+        setTimeout(() => {
+            alert(this)
+        }, 2000);
+        
+        // 方法调用中，谁调用函数，this指向谁
+        document.getElementById('s1').onclick = dosomething
+
+        // undefined,因为 function(){return this.name;}的作用域
+        // var name = 'this window';
+        // var obj = {
+        //     name : 'my obj',
+        //     getNameFunc : function(){
+        //         return function(){
+        //             return this.name;
+        //         }
+        //     }
+        // }
+        // alert('---',obj.getNameFunc()())
+    </script>
+</body>
+</html>
