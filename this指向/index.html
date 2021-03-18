@@ -14,6 +14,9 @@
             this永远指向一个对象；
             this指向是动态的，很难事先确定到底指向哪个对象；
 
+        匿名函数的this指向：
+            Anonymous functions are not bound to an object in this context, meaning the this object points to window unless executing in strict mode (where this is undefined).
+            在这个上下文中，匿名函数并没有绑定到任一对象中，意味着this指向window（非严格模式下），严格模式下，this指向undefined
      -->
      <!-- 一个事件处理且还有一个默认行为，则先执行事件处理，再执行默认行为 -->
      <a href="../闭包/index.html" onClick="dosomething()">aaaaaaaaaaaaa</a>
@@ -24,6 +27,7 @@
 
     <div id="s2" onclick="dosomething()">ssssssssssssssssssssss2</div>
     <script>
+        // "use strict";
         function dosomething() {
            alert(this)
         }
@@ -38,17 +42,29 @@
         // 方法调用中，谁调用函数，this指向谁
         document.getElementById('s1').onclick = dosomething
 
-        // undefined,因为 function(){return this.name;}的作用域
-        // var name = 'this window';
-        // var obj = {
-        //     name : 'my obj',
-        //     getNameFunc : function(){
-        //         return function(){
-        //             return this.name;
-        //         }
-        //     }
-        // }
-        // alert('---',obj.getNameFunc()())
+        // 匿名函数并没有绑定到任一对象上，所以this指向window全局作用域
+        var name = 'this window';
+        var obj1 = {
+            name : 'my obj',
+            getNameFunc : function(){
+                return function(){
+                    return this.name;
+                }
+            }
+        }
+        alert('====='+obj1.getNameFunc()())
+
+        // my obj,因为that指向obj2作用域
+        var obj2 = {
+            name : 'my obj',
+            getNameFunc : function(){
+                var that = this;
+                return function(){
+                    return that.name;
+                }
+            }
+        }
+        alert('>>>'+obj2.getNameFunc()())
     </script>
 </body>
 </html>
