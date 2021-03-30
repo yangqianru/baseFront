@@ -1,0 +1,70 @@
+<!-- 文档类型声明，告诉浏览器使用html5规范进行编写 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数柯里化</title>
+</head>
+
+<body>
+    <!-- 
+        函数柯里化
+            定义：把接收多个参数的函数转变成接收一个参数的函数，并且返回接收余下参数的函数
+            作用：参数/逻辑复用，延迟执行，提前确认，
+            应用场景：bind函数
+    -->
+    <script>
+        window.onload = function () {
+            // 参数固定
+            function add(a, b, c) {
+                return a + b + c
+            }
+
+            function fixedParamsFn(add) {
+                const fnLength = add.length;
+                let args = [];
+                return function fn() {
+                    args = [...args, ...arguments];
+                    if (args.length === fnLength) {
+                        return add(...args)
+                    } else {
+                        return fn
+                    }
+                }
+            }
+
+            const curryingFixedParams = fixedParamsFn(add);
+
+            console.log(curryingFixedParams(389)(689)(1001));
+
+            // 参数不固定
+            function curryingunFixedParams() {
+                let args = [...arguments];
+                return function fn() {
+                    if (arguments.length > 0) {
+                        args = [...args,...arguments];
+                        return fn
+                    }else{
+                        return args.reduce((preValue,curValue)=>preValue+curValue);
+                    }
+                }
+            }
+
+            console.log(curryingunFixedParams(1)(2)(12)(89)(11089)(99)())
+
+            // bind函数
+            Function.prototype.bind = function(context){
+                const _this = this;
+                const args = Array.prototype.slice(arguments,1);
+                return function(){
+                    return _this.apply(context,args);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
