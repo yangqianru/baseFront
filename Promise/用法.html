@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promise用法</title>
+</head>
+
+<body>
+    <!-- 
+        Promise
+            三种状态：pending(等待中)、fulfilled(完成)、rejected(已失败)
+            方法：resolve、reject、then、catch、finally、all、race
+            特点：状态不可逆 
+     -->
+    <script>
+        function a1(params) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    console.log('done promise a1')
+                    reject('a1')
+                }, 1000);
+            })
+        }
+
+        function a2(params) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    console.log('done promise a2')
+                    resolve({
+                        a: 'a2'
+                    })
+                }, 2000);
+            })
+        }
+
+        function a3(params) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    console.log('done promise a3')
+                    resolve('a3')
+                }, 3000);
+            })
+        }
+
+        // 链接调用
+        // a1().then((q) => {
+        //     console.log(q)
+        //     return a2()
+        // }).then((s) => {
+        //     console.log(s)
+        //     return a3();
+        // }).then((a) => {
+        //     console.log('a', a);
+        // }, (b) => {
+        //     console.log('b', b);
+        // });
+
+        // 所有的都执行完才返回结果,有一个异常直接走catch
+        // Promise.all([a1(), a2(), a3()]).then(res => {
+        //     console.log('res', res);
+        // }).catch(err => {
+        //     console.log('err', err);
+        // })
+
+        // 只要有一个执行完就返回结果
+        Promise.race([a1(), a2(), a3()]).then(res => {
+            console.log('res', res);
+        }).catch(err => {
+            console.log('err', err);
+        }).finally(
+            console.log('finally')
+        )
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!-- 文档类型声明，一句指令，告诉浏览器使用html5规范进行编写 -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>介绍一下Promise的特性、优缺点，内部是如何实现的？动手实现Promise</title>
+    <script type="text/javascript" src="../commonJs/require.js" data-main="./test"></script>
+</head>
+
+<body>
+    <!-- 
+        Promise
+            规范点：
+                then 返回的依然是promise;
+                then()方法回调函数如果发生错误，会被捕获到，那么then返回的promise会自动变成onRejected,执行onRejected()回调函数;
+                done 处于回调链的末端，保障可以向全局抛出任何可能出现的错误吗，且未返回promise对象；
+            实现核心点：
+            优点：
+            缺点：
+            应用场景：
+     -->
+    <script>
+        // promise没有被onRejected()处理的事件，可以监听unhandledrejection来捕获
+        window.onunhandledrejection = event => {
+            console.warn(`UNHANDLED PROMISE REJECTION: ${event.reason}`);
+        };
+        // 普通错误使用error监听；
+        window.addEventListener('error', error => {
+            console.log('ERROR',error); // 不会触发
+        });
+        let promise1 = new Promise((resolve, reject) => {
+            console.log('aaaa');
+            a.b = 2;
+            setTimeout(() => {
+                reject(1111);
+                console.log(1111);
+            }, 1000);
+        });
+
+        // promise1.then(res=>{
+        //     console.log('then',res)
+        // })
+
+        // let promise2 = new Promise((resolve, reject) => {
+        //     console.log('bbbb');
+        //     setTimeout(() => {
+        //         reject(2222);
+        //         console.log(2222);
+        //     }, 2000);
+        // });
+
+        // let promise3 = new Promise((resolve, reject) => {
+        //     console.log('cccc');
+        //     setTimeout(() => {
+        //         resolve(3333);
+        //         console.log(3333);
+        //     }, 3000);
+        // });
+
+        // Promise.race([promise1, promise2, promise3]).then(res => {
+        //     console.log('one VALUE', res);
+        // }).catch(reason => {
+        //     console.log('one REASON', reason);
+        // })
+        // Promise.all([promise1, promise2, promise3]).then(res => {
+        //     console.log('ALL VALUE', res);
+        // }).catch(reason => {
+        //     console.log('ALL REASON', reason);
+        // })
+    </script>
+</body>
+
+</html>
