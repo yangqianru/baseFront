@@ -1,7 +1,7 @@
 // (async () => {
 //     await (()=>new Promise((resolve) => setTimeout(() => {
-//         console.log('b')
-//         resolve('b')
+//         console.log('b===',new Date())
+//         resolve('b===')
 //     }, 2000)))()
 // })()
 
@@ -11,5 +11,5 @@ function sleep(times) {
 
 (() => {
     sleep(2000)
-    console.log('do b',new Date());
+    console.log('do b===',new Date());
 })()

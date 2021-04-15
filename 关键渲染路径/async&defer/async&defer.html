@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>async和defer的区别</title>
-    <script src="./a.js"></script>
-    <script src="./b.js"></script>
+    <script src="./a.js" async></script>
+    <script src="./b.js" defer></script>
 </head>
 
 <body>
@@ -16,10 +16,10 @@
     <script>
         console.log('inline script',new Date())
         window.addEventListener('load', () => {
-            console.log('load',new Date())
+            console.log('load===',new Date())
         })
         document.addEventListener('DOMContentLoaded',()=>{
-            console.log('DOMContentLoaded',new Date())
+            console.log('DOMContentLoaded===',new Date())
         })
     </script>
 </body>
