@@ -19,24 +19,31 @@
         console.log(1);
 
         setTimeout(() => {
+             // 宏任务
             console.log(2);
             Promise.resolve().then(() => {
+                 // 宏-微任务
                 console.log(3)
             });
         });
 
         new Promise((resolve, reject) => {
+            // 同步
             console.log(4)
             resolve(5)
         }).then((data) => {
+            // 微任务
             console.log(data);
         })
 
         setTimeout(() => {
+            // 宏任务
             console.log(6);
         })
 
         console.log(7);
+
+        // 正确顺序：1,4,7,5,2,3,6
     </script>
 </body>
 
