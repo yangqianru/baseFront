@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原型链</title>
+</head>
+<body>
+    <script>
+        // call方法实现继承的弊端：无法继承父类原型中定义的方法
+        function Parent(name,age) {
+            this.name = name;
+            this.age = age;
+            this.sayHi = function () {
+                console.log(this.name,this.age);
+            }
+        }
+
+        Parent.prototype.callPhone = function () {
+            console.log('call......');
+        }
+
+        function Child(name,age) {
+            Parent.call(this,name,age);
+        }
+
+        let newC = new Child('li',25);
+        console.log(newC);
+        newC.sayHi();
+        
+
+    </script>
+</body>
+</html>

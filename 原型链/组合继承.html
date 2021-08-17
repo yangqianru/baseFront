@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原型链</title>
+</head>
+<body>
+    <script>
+        // 组合继承：将原型链与借用构造函数的技术组合在一起，发挥二者之长；
+        function Parent(name,age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        Parent.prototype.sayAge = function () {
+            console.log(this.age);
+        }
+
+        Parent.prototype.sayName = function () {
+            console.log(this.name);
+        }
+
+        function Child(name,age) {
+            Parent.call(this,name,age);
+            this.sex = '女'    
+        }
+        
+        Child.prototype = new Parent();
+        Child.prototype.constructor = Parent;  
+        Child.prototype.saySex = function () {
+            console.log(this.sex);
+        } 
+
+        const c1 = new Child('li',25);
+
+        console.log(c1);
+        c1.sayAge();
+        c1.sayName();
+        c1.saySex();
+
+    </script>
+</body>
+</html>
