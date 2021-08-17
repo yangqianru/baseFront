@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防抖和节流</title>
+</head>
+
+<body>
+    <!-- <div id='btn' onclick="debounce(()=>{console.log('666');},2000)()">点击</div> -->
+    <div id='btn'>点击</div>
+    <!-- 
+        为什么放在onclick里防抖不生效？
+        因为onclick里的函数，在每次触发click都会重新执行，而防抖靠的是闭包来实现的，真正需要每次执行的是debounce方法的return函数
+     -->
+    <script>
+        window.onload = function () {
+            document.getElementById('btn').addEventListener('click', debounce(() => {
+                console.log('666');
+            }, 2000));
+        }
+        // 初级版本,不考虑立即执行的情况
+        function debounce(fn,durations) {
+            console.log('dododo')
+            let time = null;
+            return function () {
+                console.log(time,'<----time');
+                if (time) {
+                    // clearTimeout用来取消之前使用setTimeout设置的定时器
+                    clearTimeout(time);
+                    console.log(time,'<----time--end');
+                }
+                // setTimeout的返回值是个正整数，表示定时器的编号
+                time = setTimeout(fn, durations);
+            }
+        }
+        // 防抖考虑立即执行的情况
+        function debounce(fn, durations,params) {
+            let time = null;
+            return function () {
+                console.log(time, '<----time');
+                if (!time) {
+                    fn();
+                    time = setTimeout(() => {
+                        time = null;
+                    }, durations);
+                }else{
+                    clearTimeout(time);
+                    console.log(time, '<----time--end');
+                    time = setTimeout(fn, durations);
+                }
+            }
+        }
+        // 节流 
+    </script>
+</body>
+
+</html>
